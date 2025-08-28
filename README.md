@@ -1,1 +1,1 @@
-# blog_app
+# Flask blog app deployed
