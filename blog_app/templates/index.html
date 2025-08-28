@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Blog</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h1>My Blog</h1>
+  </nav>
+
+  <div class="container">
+    <!-- Post Form -->
+    <div class="form-card">
+      <h2>✍️ Write a New Post</h2>
+      <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="Post title" required>
+        <textarea name="content" placeholder="Write something..." required></textarea>
+        <button type="submit">Publish</button>
+      </form>
+    </div>
+
+    <!-- Post List -->
+    <h2 class="section-title">📚 Recent Posts</h2>
+    <div class="posts">
+      {% for post in posts %}
+      <div class="post-card">
+        <h3><a href="/post/{{ post[0] }}">{{ post[1] }}</a></h3>
+        <p>{{ post[2][:120] }}...</p>
+
+        <div class="actions">
+          <a href="/post/{{ post[0] }}" class="read-more">Read more →</a>
+          <form action="/delete/{{ post[0] }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+            <button type="submit" class="delete-btn">🗑 Delete</button>
+          </form>
+        </div>
+      </div>
+      {% else %}
+      <p>No posts yet. Write your first one!</p>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
