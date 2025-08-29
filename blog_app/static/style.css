@@ -142,3 +142,9 @@ button:hover {
 .back-btn:hover {
   background: #4338ca;
 }
+
+.banner-img{
+  display:block;
+  margin: auto;
+  width: 50%;
+}
