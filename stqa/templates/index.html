@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Todo List App</title>
+    <!-- Tailwind CSS CDN for rapid UI development -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a nicer typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Use the Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* A simple class for adding a subtle hover effect to buttons */
+        .btn-hover {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto max-w-2xl mt-12 px-4">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+
+            <!-- Header Section -->
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900">My Todo List</h1>
+                <p class="text-gray-500 mt-2">A simple and elegant todo app built with Flask & SQLite.</p>
+            </header>
+
+            <!-- Add Todo Form -->
+            <form action="{{ url_for('add') }}" method="POST" class="flex gap-4 mb-8">
+                <input
+                    type="text"
+                    name="task"
+                    placeholder="Add a new task..."
+                    class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    required
+                    autocomplete="off"
+                >
+                <button
+                    type="submit"
+                    class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 btn-hover"
+                >
+                    Add Task
+                </button>
+            </form>
+
+            <!-- Todo List Section -->
+            <main class="space-y-4">
+                <!-- Jinja2 templating to loop through todos -->
+                {% if todos %}
+                    {% for todo in todos %}
+                        <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                            <!-- Task Text with conditional styling -->
+                            <p class="flex-grow text-lg {% if todo.done %}line-through text-gray-400{% endif %}">
+                                {{ todo.task }}
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="flex items-center gap-3 ml-4 flex-shrink-0">
+                                <!-- Update Button (changes text based on state) -->
+                                <a href="{{ url_for('update', todo_id=todo.id) }}" class="btn-hover">
+                                    {% if todo.done %}
+                                    <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 text-sm font-medium">
+                                        Undo
+                                    </button>
+                                    {% else %}
+                                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 text-sm font-medium">
+                                        Done
+                                    </button>
+                                    {% endif %}
+                                </a>
+                                <!-- Delete Button -->
+                                <a href="{{ url_for('delete', todo_id=todo.id) }}"
+                                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 text-sm font-medium btn-hover">
+                                Delete
+                                </a>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Message shown when there are no todos -->
+                    <div class="text-center py-8 px-4 bg-gray-50 rounded-lg">
+                        <p class="text-gray-500">No tasks yet! Add one above to get started.</p>
+                    </div>
+                {% endif %}
+            </main>
+
+        </div>
+        <footer class="text-center text-gray-500 mt-8 pb-4">
+            <p>Built for Testing | Flask & Tailwind CSS</p>
+        </footer>
+    </div>
+
+</body>
+</html>
+
